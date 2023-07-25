@@ -1,6 +1,6 @@
-export type AnchorMovieReviewProgram = {
+export type AnchorMovie = {
   version: '0.1.0';
-  name: 'anchor_movie_review_program';
+  name: 'anchor_movie';
   instructions: [
     {
       name: 'addMovieReview';
@@ -35,6 +35,11 @@ export type AnchorMovieReviewProgram = {
           isSigner: false;
         },
         {
+          name: 'tokenProgram';
+          isMut: false;
+          isSigner: false;
+        },
+        {
           name: 'movieCommentCounter';
           isMut: true;
           isSigner: false;
@@ -53,6 +58,30 @@ export type AnchorMovieReviewProgram = {
               }
             ];
           };
+        },
+        {
+          name: 'mint';
+          isMut: true;
+          isSigner: false;
+          pda: {
+            seeds: [
+              {
+                kind: 'const';
+                type: 'string';
+                value: 'mint';
+              }
+            ];
+          };
+        },
+        {
+          name: 'tokenAccount';
+          isMut: true;
+          isSigner: false;
+        },
+        {
+          name: 'associatedTokenProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
           name: 'rent';
@@ -125,9 +154,38 @@ export type AnchorMovieReviewProgram = {
           };
         },
         {
+          name: 'mint';
+          isMut: true;
+          isSigner: false;
+          pda: {
+            seeds: [
+              {
+                kind: 'const';
+                type: 'string';
+                value: 'mint';
+              }
+            ];
+          };
+        },
+        {
+          name: 'tokenAccount';
+          isMut: true;
+          isSigner: false;
+        },
+        {
           name: 'initializer';
           isMut: true;
           isSigner: true;
+        },
+        {
+          name: 'tokenProgram';
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: 'associatedTokenProgram';
+          isMut: false;
+          isSigner: false;
         },
         {
           name: 'rent';
@@ -234,6 +292,46 @@ export type AnchorMovieReviewProgram = {
           type: 'string';
         }
       ];
+    },
+    {
+      name: 'initializeTokenMint';
+      accounts: [
+        {
+          name: 'mint';
+          isMut: true;
+          isSigner: false;
+          pda: {
+            seeds: [
+              {
+                kind: 'const';
+                type: 'string';
+                value: 'mint';
+              }
+            ];
+          };
+        },
+        {
+          name: 'user';
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: 'tokenProgram';
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: 'rent';
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: 'systemProgram';
+          isMut: false;
+          isSigner: false;
+        }
+      ];
+      args: [];
     }
   ];
   accounts: [
@@ -307,9 +405,9 @@ export type AnchorMovieReviewProgram = {
   ];
 };
 
-export const IDL: AnchorMovieReviewProgram = {
+export const IDL: AnchorMovie = {
   version: '0.1.0',
-  name: 'anchor_movie_review_program',
+  name: 'anchor_movie',
   instructions: [
     {
       name: 'addMovieReview',
@@ -344,6 +442,11 @@ export const IDL: AnchorMovieReviewProgram = {
           isSigner: false,
         },
         {
+          name: 'tokenProgram',
+          isMut: false,
+          isSigner: false,
+        },
+        {
           name: 'movieCommentCounter',
           isMut: true,
           isSigner: false,
@@ -362,6 +465,30 @@ export const IDL: AnchorMovieReviewProgram = {
               },
             ],
           },
+        },
+        {
+          name: 'mint',
+          isMut: true,
+          isSigner: false,
+          pda: {
+            seeds: [
+              {
+                kind: 'const',
+                type: 'string',
+                value: 'mint',
+              },
+            ],
+          },
+        },
+        {
+          name: 'tokenAccount',
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: 'associatedTokenProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
           name: 'rent',
@@ -434,9 +561,38 @@ export const IDL: AnchorMovieReviewProgram = {
           },
         },
         {
+          name: 'mint',
+          isMut: true,
+          isSigner: false,
+          pda: {
+            seeds: [
+              {
+                kind: 'const',
+                type: 'string',
+                value: 'mint',
+              },
+            ],
+          },
+        },
+        {
+          name: 'tokenAccount',
+          isMut: true,
+          isSigner: false,
+        },
+        {
           name: 'initializer',
           isMut: true,
           isSigner: true,
+        },
+        {
+          name: 'tokenProgram',
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: 'associatedTokenProgram',
+          isMut: false,
+          isSigner: false,
         },
         {
           name: 'rent',
@@ -543,6 +699,46 @@ export const IDL: AnchorMovieReviewProgram = {
           type: 'string',
         },
       ],
+    },
+    {
+      name: 'initializeTokenMint',
+      accounts: [
+        {
+          name: 'mint',
+          isMut: true,
+          isSigner: false,
+          pda: {
+            seeds: [
+              {
+                kind: 'const',
+                type: 'string',
+                value: 'mint',
+              },
+            ],
+          },
+        },
+        {
+          name: 'user',
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: 'tokenProgram',
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: 'rent',
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: 'systemProgram',
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [],
     },
   ],
   accounts: [

@@ -9,18 +9,18 @@ import {
   ModalBody,
   Stack,
   FormControl,
-} from "@chakra-ui/react"
-import { FC, useState } from "react"
-import * as anchor from "@project-serum/anchor"
-import { getAssociatedTokenAddress } from "@solana/spl-token"
-import { CommentList } from "./CommentList"
-import { useConnection, useWallet } from "@solana/wallet-adapter-react"
-import { useWorkspace } from "../context/Anchor"
+} from '@chakra-ui/react';
+import { FC, useState } from 'react';
+import * as anchor from '@project-serum/anchor';
+import { getAssociatedTokenAddress } from '@solana/spl-token';
+import { CommentList } from './CommentList';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { useWorkspace } from '../context/Anchor';
 
 interface ReviewDetailProps {
-  isOpen: boolean
-  onClose: any
-  movie: any
+  isOpen: boolean;
+  onClose: any;
+  movie: any;
 }
 
 export const ReviewDetail: FC<ReviewDetailProps> = ({
@@ -28,35 +28,35 @@ export const ReviewDetail: FC<ReviewDetailProps> = ({
   onClose,
   movie,
 }: ReviewDetailProps) => {
-  const [comment, setComment] = useState("")
-  const { connection } = useConnection()
-  const { publicKey, sendTransaction } = useWallet()
-  const { program } = useWorkspace()
+  const [comment, setComment] = useState('');
+  // const { connection } = useConnection();
+  const { publicKey, sendTransaction } = useWallet();
+  const { program, connection } = useWorkspace();
 
   const handleSubmit = async (event: any) => {
-    event.preventDefault()
+    event.preventDefault();
 
     if (!publicKey || !program) {
-      alert("Please connect your wallet!")
-      return
+      alert('Please connect your wallet!');
+      return;
     }
 
-    const movieReview = new anchor.web3.PublicKey(movie.publicKey)
+    const movieReview = new anchor.web3.PublicKey(movie.publicKey);
 
     const [movieReviewCounterPda] =
       await anchor.web3.PublicKey.findProgramAddress(
-        [Buffer.from("counter"), movieReview.toBuffer()],
+        [Buffer.from('counter'), movieReview.toBuffer()],
         program.programId
-      )
+      );
 
     const [mintPDA] = await anchor.web3.PublicKey.findProgramAddress(
-      [Buffer.from("mint")],
+      [Buffer.from('mint')],
       program.programId
-    )
+    );
 
-    const tokenAddress = await getAssociatedTokenAddress(mintPDA, publicKey)
+    const tokenAddress = await getAssociatedTokenAddress(mintPDA, publicKey);
 
-    const transaction = new anchor.web3.Transaction()
+    const transaction = new anchor.web3.Transaction();
 
     const instruction = await program.methods
       .addComment(comment)
@@ -65,21 +65,26 @@ export const ReviewDetail: FC<ReviewDetailProps> = ({
         movieCommentCounter: movieReviewCounterPda,
         tokenAccount: tokenAddress,
       })
-      .instruction()
+      .instruction();
 
-    transaction.add(instruction)
+    transaction.add(instruction);
 
     try {
-      let txid = await sendTransaction(transaction, connection)
+      let txid = await sendTransaction(transaction, connection!);
 
       console.log(
         `Transaction submitted: https://explorer.solana.com/tx/${txid}?cluster=devnet`
-      )
+      );
+      // Wait for transaction confirmation
+      await connection!.confirmTransaction(txid, 'confirmed');
+
+      // Reload the page after confirmation
+      window.location.reload();
     } catch (e) {
-      console.log(JSON.stringify(e))
-      alert(JSON.stringify(e))
+      console.log(JSON.stringify(e));
+      alert(JSON.stringify(e));
     }
-  }
+  };
 
   return (
     <div>
@@ -87,25 +92,25 @@ export const ReviewDetail: FC<ReviewDetailProps> = ({
         <ModalOverlay />
         <ModalContent>
           <ModalHeader
-            textTransform="uppercase"
-            textAlign={{ base: "center", md: "center" }}
+            textTransform='uppercase'
+            textAlign={{ base: 'center', md: 'center' }}
           >
             {movie.account.title}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Stack textAlign={{ base: "center", md: "center" }}>
+            <Stack textAlign={{ base: 'center', md: 'center' }}>
               <p>{movie.account.description}</p>
               <form onSubmit={handleSubmit}>
                 <FormControl isRequired>
                   <Input
-                    id="title"
-                    color="black"
+                    id='title'
+                    color='black'
                     onChange={(event) => setComment(event.currentTarget.value)}
-                    placeholder="Submit a comment..."
+                    placeholder='Submit a comment...'
                   />
                 </FormControl>
-                <Button width="full" mt={4} type="submit">
+                <Button width='full' mt={4} type='submit'>
                   Send
                 </Button>
               </form>
@@ -115,5 +120,5 @@ export const ReviewDetail: FC<ReviewDetailProps> = ({
         </ModalContent>
       </Modal>
     </div>
-  )
-}
+  );
+};
