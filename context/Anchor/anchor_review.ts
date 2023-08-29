@@ -396,6 +396,48 @@ export type AnchorMovie = {
       };
     }
   ];
+  events: [
+    {
+      name: 'MovieCreationEvent';
+      fields: [
+        {
+          name: 'title';
+          type: 'string';
+          index: false;
+        },
+        {
+          name: 'description';
+          type: 'string';
+          index: false;
+        },
+        {
+          name: 'rating';
+          type: 'u8';
+          index: false;
+        },
+        {
+          name: 'label';
+          type: 'string';
+          index: true;
+        }
+      ];
+    },
+    {
+      name: 'CounterEvent';
+      fields: [
+        {
+          name: 'data';
+          type: 'u64';
+          index: false;
+        },
+        {
+          name: 'label';
+          type: 'string';
+          index: true;
+        }
+      ];
+    }
+  ];
   errors: [
     {
       code: 6000;
@@ -801,6 +843,48 @@ export const IDL: AnchorMovie = {
           },
         ],
       },
+    },
+  ],
+  events: [
+    {
+      name: 'MovieCreationEvent',
+      fields: [
+        {
+          name: 'title',
+          type: 'string',
+          index: false,
+        },
+        {
+          name: 'description',
+          type: 'string',
+          index: false,
+        },
+        {
+          name: 'rating',
+          type: 'u8',
+          index: false,
+        },
+        {
+          name: 'label',
+          type: 'string',
+          index: true,
+        },
+      ],
+    },
+    {
+      name: 'CounterEvent',
+      fields: [
+        {
+          name: 'data',
+          type: 'u64',
+          index: false,
+        },
+        {
+          name: 'label',
+          type: 'string',
+          index: true,
+        },
+      ],
     },
   ],
   errors: [
